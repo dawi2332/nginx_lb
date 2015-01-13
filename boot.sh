@@ -1,0 +1,1 @@
+vendor/blog-coreos-1/nginx/boot.sh
