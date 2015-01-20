@@ -25,11 +25,12 @@ EnvironmentFile=/etc/environment
 ExecStartPre=-/usr/bin/docker kill %n
 ExecStartPre=-/usr/bin/docker rm %n
 ExecStartPre=/usr/bin/docker pull dawi2332/nginx_lb
-ExecStart=/usr/bin/docker run --name %n -e HOST_IP=${COREOS_PUBLIC_IPV4} -p ${COREOS_PUBLIC_IPV4}:80:80 dawi2332/nginx_lb
+ExecStart=/usr/bin/docker run --name %n --env-file=/etc/environment -p ${COREOS_PUBLIC_IPV4}:80:80 \
+dawi2332/nginx_lb /usr/local/bin/confd-watch
 
 # Stop
 ExecStop=/usr/bin/docker stop %n
 
 [X-Fleet]
-X-Conflicts=nginx.service
+X-Conflicts=%n
 X-Conflicts=apache@*.service
